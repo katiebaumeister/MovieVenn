@@ -471,30 +471,24 @@ body.has-results .uploads {
 /* Desktop / wide layouts */
 @media (min-width: 768px) {
   :root {
-    --logo-space: clamp(160px, 22vw, 220px);
-    --bg-size: min(420px, 38vw);
-    --app-width: 720px;
+    --logo-space: 188px;
+    --bg-size: 360px;
+    --app-width: 640px;
     --radius: 20px;
   }
 
-  body:not(.has-results) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   body:not(.has-results) .atmosphere {
-    background-position: center 8%;
+    background-position: top center;
   }
 
   body:not(.has-results) .app {
-    padding-top: calc(var(--logo-space) + 24px);
+    padding-top: calc(var(--logo-space) + 8px);
     padding-bottom: 48px;
   }
 
   .uploads {
     gap: 16px;
-    margin-top: 28px;
+    margin-top: 4px;
   }
 
   .upload {
@@ -510,7 +504,7 @@ body.has-results .uploads {
   }
 
   .hint {
-    margin-top: 32px;
+    margin-top: 18px;
     font-size: 0.95rem;
     max-width: 36rem;
     margin-left: auto;
@@ -583,9 +577,9 @@ body.has-results .uploads {
 
 @media (min-width: 1100px) {
   :root {
-    --logo-space: clamp(180px, 18vw, 240px);
-    --bg-size: min(480px, 34vw);
-    --app-width: 780px;
+    --logo-space: 198px;
+    --bg-size: 380px;
+    --app-width: 680px;
   }
 
   body.has-results .app {
