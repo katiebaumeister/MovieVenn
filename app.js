@@ -33,6 +33,27 @@
     uploadB: document.querySelector('.upload[data-side="b"]'),
   };
 
+  function isFinePointer() {
+    return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  }
+
+  function addCsvLabel() {
+    return isFinePointer() ? "Click or drop CSV" : "Tap to add CSV";
+  }
+
+  function syncPointerMode() {
+    document.body.dataset.pointer = isFinePointer() ? "fine" : "coarse";
+    if (!els.uploadA.classList.contains("is-loaded")) {
+      els.ctaA.textContent = addCsvLabel();
+    }
+    if (!els.uploadB.classList.contains("is-loaded")) {
+      els.ctaB.textContent = addCsvLabel();
+    }
+  }
+
+  syncPointerMode();
+  window.matchMedia("(hover: hover) and (pointer: fine)").addEventListener("change", syncPointerMode);
+
   function parseCsv(text) {
     const rows = [];
     let row = [];
@@ -296,8 +317,8 @@
     els.list.innerHTML = "";
 
     [els.uploadA, els.uploadB].forEach((el) => el.classList.remove("is-loaded"));
-    els.ctaA.textContent = "Tap to add CSV";
-    els.ctaB.textContent = "Tap to add CSV";
+    els.ctaA.textContent = addCsvLabel();
+    els.ctaB.textContent = addCsvLabel();
     els.metaA.hidden = true;
     els.metaB.hidden = true;
     els.metaA.textContent = "";
@@ -320,8 +341,52 @@
     }
   }
 
+  async function ingestFile(file, side) {
+    if (!file) return;
+    try {
+      await loadFile(file, side);
+    } catch (err) {
+      alert(err.message || "Couldn’t read that CSV.");
+    }
+  }
+
+  function wireDropZone(uploadEl, side) {
+    const onDrag = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    uploadEl.addEventListener("dragenter", (event) => {
+      onDrag(event);
+      uploadEl.classList.add("is-dragover");
+    });
+    uploadEl.addEventListener("dragover", (event) => {
+      onDrag(event);
+      uploadEl.classList.add("is-dragover");
+    });
+    uploadEl.addEventListener("dragleave", (event) => {
+      onDrag(event);
+      if (!uploadEl.contains(event.relatedTarget)) {
+        uploadEl.classList.remove("is-dragover");
+      }
+    });
+    uploadEl.addEventListener("drop", (event) => {
+      onDrag(event);
+      uploadEl.classList.remove("is-dragover");
+      const file = event.dataTransfer?.files?.[0];
+      if (!file) return;
+      if (!/\.csv$/i.test(file.name) && file.type !== "text/csv") {
+        alert("Please drop a .csv file.");
+        return;
+      }
+      ingestFile(file, side);
+    });
+  }
+
   els.fileA.addEventListener("change", (e) => onFileChange(e, "a"));
   els.fileB.addEventListener("change", (e) => onFileChange(e, "b"));
+  wireDropZone(els.uploadA, "a");
+  wireDropZone(els.uploadB, "b");
 
   els.nameA.addEventListener("input", () => {
     state.a.label = els.nameA.value.trim() || "You";
