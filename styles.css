@@ -48,12 +48,26 @@ body {
   background-position: top center;
   background-size: 62% auto;
   pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+body.has-results .atmosphere {
+  opacity: 0;
 }
 
 .app {
   width: min(100%, 440px);
   margin: 0 auto;
   padding: calc(var(--logo-space) + var(--safe-top) + 8px) 20px calc(36px + var(--safe-bottom));
+  transition: padding 0.25s ease;
+}
+
+body.has-results .app {
+  padding-top: calc(20px + var(--safe-top));
+}
+
+body.has-results .hero {
+  display: none;
 }
 
 .hero {

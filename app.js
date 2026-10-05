@@ -177,6 +177,7 @@
     if (!state.a.movies.size || !state.b.movies.size) return;
     els.results.hidden = false;
     els.hint.hidden = true;
+    document.body.classList.add("has-results");
     render();
   }
 
@@ -291,6 +292,7 @@
     els.search.value = "";
     els.results.hidden = true;
     els.hint.hidden = false;
+    document.body.classList.remove("has-results");
     els.list.innerHTML = "";
 
     [els.uploadA, els.uploadB].forEach((el) => el.classList.remove("is-loaded"));
