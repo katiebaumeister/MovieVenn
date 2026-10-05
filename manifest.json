@@ -1,0 +1,10 @@
+{
+  "name": "MovieVenn",
+  "short_name": "MovieVenn",
+  "description": "Compare two Letterboxd watched lists with a Venn diagram.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "orientation": "portrait"
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="description"
+      content="Compare two Letterboxd watched lists with a Venn diagram."
+    />
+    <title>MovieVenn</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <main class="app">
+      <header class="hero">
+        <h1 class="brand visually-hidden">Movie Venn</h1>
+      </header>
+
+      <section class="uploads" aria-label="Upload watched lists">
+        <div class="upload" data-side="a">
+          <span class="upload__label">Person 1</span>
+          <input
+            type="text"
+            class="upload__name"
+            id="name-a"
+            value="You"
+            maxlength="24"
+            aria-label="Name for first list"
+          />
+          <label class="upload__pick" for="file-a">
+            <input
+              type="file"
+              id="file-a"
+              accept=".csv,text/csv"
+              class="upload__input"
+            />
+            <span class="upload__cta" id="cta-a">Tap to add CSV</span>
+            <span class="upload__meta" id="meta-a" hidden></span>
+          </label>
+        </div>
+
+        <div class="upload" data-side="b">
+          <span class="upload__label">Person 2</span>
+          <input
+            type="text"
+            class="upload__name"
+            id="name-b"
+            value="Friend"
+            maxlength="24"
+            aria-label="Name for second list"
+          />
+          <label class="upload__pick" for="file-b">
+            <input
+              type="file"
+              id="file-b"
+              accept=".csv,text/csv"
+              class="upload__input"
+            />
+            <span class="upload__cta" id="cta-b">Tap to add CSV</span>
+            <span class="upload__meta" id="meta-b" hidden></span>
+          </label>
+        </div>
+      </section>
+
+      <section class="results" id="results" hidden>
+        <div class="venn-wrap">
+          <svg
+            class="venn"
+            id="venn"
+            viewBox="0 0 320 220"
+            role="img"
+            aria-label="Venn diagram of watched movies"
+          >
+            <defs>
+              <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="0.6" />
+              </filter>
+            </defs>
+            <circle
+              class="venn__circle venn__circle--a"
+              cx="118"
+              cy="110"
+              r="88"
+              data-zone="onlyA"
+            />
+            <circle
+              class="venn__circle venn__circle--b"
+              cx="202"
+              cy="110"
+              r="88"
+              data-zone="onlyB"
+            />
+            <text class="venn__count" id="count-onlyA" x="78" y="116" text-anchor="middle">
+              0
+            </text>
+            <text class="venn__count" id="count-both" x="160" y="116" text-anchor="middle">
+              0
+            </text>
+            <text class="venn__count" id="count-onlyB" x="242" y="116" text-anchor="middle">
+              0
+            </text>
+            <text class="venn__zone-label" id="label-onlyA" x="78" y="138" text-anchor="middle">
+              only
+            </text>
+            <text class="venn__zone-label" id="label-both" x="160" y="138" text-anchor="middle">
+              both
+            </text>
+            <text class="venn__zone-label" id="label-onlyB" x="242" y="138" text-anchor="middle">
+              only
+            </text>
+          </svg>
+
+          <div class="zone-tabs" role="tablist" aria-label="Venn zones">
+            <button class="zone-tab is-active" data-zone="both" type="button">
+              Shared
+            </button>
+            <button class="zone-tab" data-zone="onlyA" type="button" id="tab-onlyA">
+              Only You
+            </button>
+            <button class="zone-tab" data-zone="onlyB" type="button" id="tab-onlyB">
+              Only Friend
+            </button>
+            <button class="zone-tab" data-zone="all" type="button">All</button>
+          </div>
+        </div>
+
+        <div class="list-panel">
+          <div class="list-toolbar">
+            <label class="search">
+              <span class="visually-hidden">Search movies</span>
+              <input
+                type="search"
+                id="search"
+                placeholder="Search titles…"
+                autocomplete="off"
+                enterkeyhint="search"
+              />
+            </label>
+            <p class="list-count" id="list-count">0 films</p>
+          </div>
+          <ul class="movie-list" id="movie-list"></ul>
+          <p class="empty" id="empty" hidden>No films in this slice.</p>
+        </div>
+
+        <button class="reset" id="reset" type="button">Start over</button>
+      </section>
+
+      <p class="hint" id="hint">
+        Export from Letterboxd → Settings → Import &amp; Export → Export Your Data, then use the
+        <code>.csv</code> file
+      </p>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
